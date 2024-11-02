@@ -5,4 +5,4 @@ tabulate
 google-api-python-client
 matplotlib
 Pillow
-discord.py
+git+https://github.com/Rapptz/discord.py

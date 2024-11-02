@@ -6,4 +6,3 @@ google-api-python-client
 matplotlib
 Pillow
 discord.py
-python-dotenv

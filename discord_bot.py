@@ -1,5 +1,7 @@
 # bot.py
 import os
+import threading
+import time
 import discord
 from discord.ext import commands
 from discord import ButtonStyle
@@ -140,5 +142,25 @@ async def stats(ctx, user: commands.MemberConverter()=None):
     output_path=PNM.personal_stats(name)
     await ctx.send(file=discord.File(output_path))
     os.remove(output_path)
-    
+
+# Assuming PNM is an instance of PokerNightManager
+def keep_google_connection_alive(manager_instance, interval=300):
+    """Keep the Google Sheets connection alive by periodically calling reconnect()."""
+    def keep_alive_task():
+        while True:
+            try:
+                # Call the existing reconnect function
+                manager_instance.reconnect()
+                print("Google Sheets connection refreshed successfully.")
+            except Exception as e:
+                print(f"Error during Google Sheets keep-alive: {e}")
+            time.sleep(interval)
+
+    # Start the keep-alive task in a separate thread
+    thread = threading.Thread(target=keep_alive_task, daemon=True)
+    thread.start()
+
+# Start the keep-alive mechanism
+keep_google_connection_alive(PNM)
+
 bot.run(TOKEN)

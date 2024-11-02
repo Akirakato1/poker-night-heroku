@@ -4,10 +4,8 @@ import discord
 from discord.ext import commands
 from discord import ButtonStyle
 from discord.ui import Button, View
-from dotenv import load_dotenv
 from PokerNightManager import PokerNightManager
 
-load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 # Create a bot instance
 intents = discord.Intents.default()

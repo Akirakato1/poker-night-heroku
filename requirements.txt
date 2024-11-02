@@ -1,0 +1,9 @@
+gspread
+oauth2client
+pandas
+tabulate
+google-api-python-client
+matplotlib
+Pillow
+discord.py
+python-dotenv

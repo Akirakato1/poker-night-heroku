@@ -1,0 +1,146 @@
+# bot.py
+import os
+import discord
+from discord.ext import commands
+from discord import ButtonStyle
+from discord.ui import Button, View
+from dotenv import load_dotenv
+from PokerNightManager import PokerNightManager
+
+load_dotenv()
+TOKEN = os.getenv('DISCORD_TOKEN')
+# Create a bot instance
+intents = discord.Intents.default()
+intents.messages = True
+intents.guilds = True    # Necessary for operating within guilds
+intents.message_content = True  # Necessary to access the content of messages
+
+bot = commands.Bot(command_prefix='!', intents=intents, description="This is a Dice Roll bot", help_command=None)
+PNM=PokerNightManager()
+
+# Event listener for when the bot has switched from offline to online.
+@bot.event
+async def on_ready():
+    print(f'Logged in as {bot.user.name} (ID: {bot.user.id})')
+    print('------')
+
+@bot.event
+async def on_message(message):
+    # Check if the message is from the bot itself or another bot
+    if message.author.bot:
+        return
+    # Check if the message is a command
+    if message.content.startswith(bot.command_prefix):
+        # Process the command
+        await bot.process_commands(message)
+
+# Error handling
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandNotFound):
+        await ctx.message.delete();
+    elif isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(f'This command is on a cooldown, please wait.')
+    else:
+        raise error
+
+#Poker Night commands:
+class PlayerButton(Button):
+    def __init__(self, label, player_name):
+        super().__init__(style=ButtonStyle.primary, label=label)
+        self.player_name = player_name
+
+    async def callback(self, interaction):
+        global PNM
+        # Increment the counter for the player
+        PNM.active_night_add_buyin(self.player_name)
+        self.label = f"{self.player_name}: {PNM.active_night_player_data[self.player_name][0]}"
+        await interaction.response.edit_message(view=self.view)
+
+
+class FinishButton(Button):
+    def __init__(self):
+        super().__init__(style=ButtonStyle.success, label="FINISH")
+
+    async def callback(self, interaction):
+        global PNM
+        await interaction.response.defer()
+        
+        s_name, s_link=PNM.create_new_sheet()
+        
+        #await interaction.response.send_message(f"{s_name} sheet created: {s_link}")
+        await interaction.followup.send(f"{s_name} sheet created: {s_link}", ephemeral=False)
+        
+        # Disable all buttons after FINISH
+        for item in self.view.children:
+            item.disabled = True
+            
+        await interaction.message.edit(view=self.view)
+        self.view.stop()
+        
+class AbortButton(Button):
+    def __init__(self):
+        super().__init__(style=ButtonStyle.danger, label="ABORT")
+
+    async def callback(self, interaction):
+        
+        await interaction.followup.send("Track Aborted", ephemeral=False)
+        
+        # Disable all buttons after FINISH
+        for item in self.view.children:
+            item.disabled = True
+            
+        await interaction.message.edit(view=self.view)
+        self.view.stop()
+        
+@bot.command()
+async def track(ctx, *, names: str):
+    global PNM
+    normalized_input = names.replace(",", "\n")
+    player_names = [name.strip().capitalize() for name in normalized_input.splitlines() if name.strip()]
+    
+    PNM.init_active_night_players(player_names)
+    view = View(timeout=None)
+    for name in player_names:
+        button = PlayerButton(label=f"{name}: 1", player_name=name)
+        view.add_item(button)
+
+    finish_button = FinishButton()
+    abort_button = AbortButton()
+    view.add_item(finish_button)
+    view.add_item(abort_button)
+    await ctx.send("Track Buyins. Click button to add 1", view=view)
+
+@bot.command()
+async def checkdata(ctx):
+    global PNM
+    await ctx.send(PNM.checkdata())
+
+@bot.command()
+async def leaderboard(ctx):
+    global PNM
+    await ctx.send(PNM.leaderboard())
+
+@bot.command()
+async def pokersheet(ctx):
+    global PNM
+    await ctx.send(PNM.gs_url)
+    
+@bot.command()
+async def reconnect(ctx):
+    global PNM
+    await ctx.send(PNM.reconnect())
+
+@bot.command()
+async def stats(ctx, user: commands.MemberConverter()=None):
+    global PNM
+    
+    name=ctx.author.name
+    if user!=None:
+        name=user.name
+    
+    output_path=PNM.personal_stats(name)
+    await ctx.send(file=discord.File(output_path))
+    os.remove(output_path)
+    
+bot.run(TOKEN)

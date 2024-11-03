@@ -83,7 +83,7 @@ class AbortButton(Button):
         super().__init__(style=ButtonStyle.danger, label="ABORT")
 
     async def callback(self, interaction):
-        
+        await interaction.response.defer()
         await interaction.followup.send("Track Aborted", ephemeral=False)
         
         # Disable all buttons after FINISH

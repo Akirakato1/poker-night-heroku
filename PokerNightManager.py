@@ -193,33 +193,6 @@ class PokerNightManager():
         else:
             return "```Inconsistent nights detected:\n"+tabulate(pd.DataFrame(issue), headers='keys', tablefmt='grid', showindex=False)+"```"
 
-'''
-def gpt_query_stats(self, query):
-    # Read the system prompt from the file
-    with open('system_prompt.txt', 'r') as file:
-        system_prompt = file.read()
-
-    # Make the API call with the system and user messages
-    response = openai.ChatCompletion.create(
-        model="gpt-4",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": query}
-        ]
-    )
-
-    # Extract the generated script from the response
-    script = response['choices'][0]['message']['content']
-
-    # Create a restricted global namespace with only 'output' initialized
-    restricted_globals = {'output': None}
-
-    # Execute the script within the restricted namespace
-    exec(script, restricted_globals)
-
-    # Return the output variable from the restricted namespace
-    return restricted_globals['output']
-    '''
     def test_query_stats(self):
         script = """
         # Create the figure for comparison

@@ -30,6 +30,10 @@ class PokerNightManager():
         self.creds = ServiceAccountCredentials.from_json_keyfile_name("./google-credentials.json", scope)
         self.client = gspread.authorize(self.creds)
         self.sheets_service = build('sheets', 'v4', credentials=self.creds)
+
+    def active_night_add_player(self, name):
+        if name not in self.active_night_player_data.keys():
+            self.active_night_player_data[name]=[1, 0]
     
     def active_night_add_buyin(self, name):
         if name in self.active_night_player_data.keys():

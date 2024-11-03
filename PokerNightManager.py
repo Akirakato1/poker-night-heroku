@@ -193,7 +193,6 @@ class PokerNightManager():
         else:
             return "```Inconsistent nights detected:\n"+tabulate(pd.DataFrame(issue), headers='keys', tablefmt='grid', showindex=False)+"```"
 
-    import openai
 '''
 def gpt_query_stats(self, query):
     # Read the system prompt from the file

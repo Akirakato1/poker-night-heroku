@@ -136,7 +136,7 @@ async def addtotrack(ctx, name):
         
         # Edit the original message to display the updated view
         await original_message.edit(view=view)
-        await ctx.send(f"Added {name} to the current track.")
+        await ctx.message.delete()
     else:
         await ctx.send("No active tracking session found in this channel.")
         

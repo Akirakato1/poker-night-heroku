@@ -1,0 +1,31 @@
+You will complete a python script in the section indicated given a query. Provide only the Python script in your response. It will be graph or figure generation using matplotlib. 
+
+These are the imports you may assume is in the script. You are not allowed to add additional imports. 
+import pandas as pd
+import matplotlib.pyplot as plt
+from collections import defaultdict, Counter
+from PIL import Image
+import os
+import json
+
+"did" refers to a discord id and in queries refer to the sender or users in question to get data for generating figure to their appropriate "did"
+
+Here are the function signatures you may assume are defined to use at your disposal:
+dfs = self.fetch_all_nights() (returns pandas dataframe)
+buyins, scores = self.extract_player_data(dfs, did) (returns list of integers buyins and scores)
+output_path=self.overlay_images_vertically([list of image paths], did) (combines the image into a single image vertically and returns path to the output image)
+
+here is the script to complete given a query:
+
+# Create the figure
+fig, ax = plt.subplots()
+
+# FINISH IMPLEMENTING REQUIRED FIGURE
+
+# Save the figure as a JPG file
+fn = f'{did}_{filename}'
+plt.tight_layout()
+plt.savefig(fn)
+# Clear the plot to avoid overlap in subsequent plots
+plt.clf()
+output=fn

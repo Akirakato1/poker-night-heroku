@@ -196,6 +196,17 @@ class PokerNightManager():
             return "```Inconsistent nights detected:\n"+tabulate(pd.DataFrame(issue), headers='keys', tablefmt='grid', showindex=False)+"```"
 
     def gpt_query_stats(self, query):
+        def extract_code_from_response(response_text):
+            # Look for code between triple backticks or other delimiters
+            start_marker = "```python"
+            end_marker = "```"
+            start = response_text.find(start_marker)
+            end = response_text.rfind(end_marker)
+        
+            if start != -1 and end != -1:
+                return response_text[start + len(start_marker):end].strip()
+            return response_text  # Return as-is if markers are not found
+            
         with open('system_imports.txt', 'r') as file:
             imports = file.read()
             
@@ -213,7 +224,7 @@ class PokerNightManager():
         )
     
         # Extract the generated script from the response
-        script = imports+"\n"+response['choices'][0]['message']['content']
+        script = imports+"\n"+extract_code_from_response(response['choices'][0]['message']['content'])
         
         restricted_globals = {
             'self': self,

@@ -4,7 +4,7 @@ import pandas as pd
 from tabulate import tabulate
 from googleapiclient.discovery import build
 import matplotlib.pyplot as plt
-from collections import defaultdict
+from collections import defaultdict, Counter
 from PIL import Image
 import os
 import json
@@ -199,10 +199,35 @@ class PokerNightManager():
         buyins, scores = self.extract_player_data(dfs, did)
         ns_path=self.plot_net_scores(buyins, scores, did)
         bns_path=self.plot_avgnetscores_buyins(buyins, scores, did)
-        output_path=self.overlay_images_vertically([ns_path, bns_path], did)
+        bp_path=self.plot_buyins_distribution(buyins, did)
+        output_path=self.overlay_images_vertically([ns_path, bp_path, bns_path], did)
         
         return output_path
+
+    def plot_buyins_distribution(self, buyins, did, filename='buyins_distribution.jpg'):
+        # Count the number of occurrences of each unique buy-in count (number of nights with that exact buy-in count)
+        buyin_counts = Counter(buyins)
     
+        # Sort the buy-in counts by the number of buy-ins per night
+        sorted_buyin_counts = sorted(buyin_counts.items())
+        buyin_sizes = [item[0] for item in sorted_buyin_counts]
+        night_counts = [item[1] for item in sorted_buyin_counts]
+    
+        # Create the pie chart
+        fig, ax = plt.subplots()
+    
+        ax.pie(night_counts, labels=buyin_sizes, autopct='%1.1f%%', startangle=140)
+        ax.set_title(f'{self.did_to_name[did]}\'s Buy-in Distribution by Number of Nights')
+    
+        # Save the figure as a JPG file
+        fn = f'{did}_{filename}'
+        plt.tight_layout()
+        plt.savefig(fn)
+    
+        # Clear the plot to avoid overlap in subsequent plots
+        plt.clf()
+        return fn
+
     def plot_avgnetscores_buyins(self, buyins, scores, did, filename='avg_net_scores_buyins.jpg'):
         data = zip(buyins, [scores[i] - buyins[i] * 1000 for i in range(len(buyins))])
         buyin_data = defaultdict(lambda: {'total_net_score': 0, 'count': 0})

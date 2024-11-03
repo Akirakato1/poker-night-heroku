@@ -8,9 +8,11 @@ from collections import defaultdict, Counter
 from PIL import Image
 import os
 import json
+import openai
 
 class PokerNightManager():
     def __init__(self):
+        openai.api_key = os.getenv('OPENAI_API_KEY')
         self.active_night_player_data={}
         self.sheet_prefix="Night"
         self.headers=["PLAYER", "BUYIN", "SCORE"]
@@ -193,14 +195,25 @@ class PokerNightManager():
         else:
             return "```Inconsistent nights detected:\n"+tabulate(pd.DataFrame(issue), headers='keys', tablefmt='grid', showindex=False)+"```"
 
-    def test_query_stats(self):
+    def gpt_query_stats(self, query):
         with open('system_imports.txt', 'r') as file:
             imports = file.read()
             
-        with open('test_script.txt', 'r') as file:
-            script = file.read()
-
-        script=imports+"\n"+script
+        # Read the system prompt from the file
+        with open('system_prompt.txt', 'r') as file:
+            system_prompt = file.read()
+    
+        # Make the API call with the system and user messages
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": query}
+            ]
+        )
+    
+        # Extract the generated script from the response
+        script = imports+"\n"+response['choices'][0]['message']['content']
         
         restricted_globals = {
             'self': self,

@@ -227,10 +227,11 @@ class PokerNightManager():
         script = imports+"\n"+extract_code_from_response(response['choices'][0]['message']['content'])
 
         print(script)
-        
+        dfs = self.fetch_all_nights()
         restricted_globals = {
             'self': self,
-            'output': None
+            'output': None,
+            'dfs': dfs
         }
 
         # Execute the script within the restricted namespace

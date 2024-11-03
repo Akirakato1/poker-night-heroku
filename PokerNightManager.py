@@ -192,7 +192,51 @@ class PokerNightManager():
             return "All poker night data scores and buyins consistent"
         else:
             return "```Inconsistent nights detected:\n"+tabulate(pd.DataFrame(issue), headers='keys', tablefmt='grid', showindex=False)+"```"
-    
+
+    #def gpt_query_stats(self, query):
+    def test_query_stats(self):
+        script = """
+        # Create the figure for comparison
+        fig, ax = plt.subplots()
+        
+        # Fetch all nights' data as a DataFrame
+        dfs = self.fetch_all_nights()
+        
+        # Extract data for both Discord IDs
+        buyins_anarchira, scores_anarchira = self.extract_player_data(dfs, 'Anarchira')
+        buyins_yaboinicholas, scores_yaboinicholas = self.extract_player_data(dfs, 'Yaboinicholas')
+        
+        # Calculate cumulative scores for both users
+        cumulative_scores_anarchira = [sum(scores_anarchira[:i + 1]) for i in range(len(scores_anarchira))]
+        cumulative_scores_yaboinicholas = [sum(scores_yaboinicholas[:i + 1]) for i in range(len(scores_yaboinicholas))]
+        
+        # Plot cumulative scores for both users
+        nights_anarchira = list(range(1, len(scores_anarchira) + 1))
+        nights_yaboinicholas = list(range(1, len(scores_yaboinicholas) + 1))
+        
+        ax.plot(nights_anarchira, cumulative_scores_anarchira, label='Anarchira Cumulative Scores', marker='o', linestyle='-', color='blue')
+        ax.plot(nights_yaboinicholas, cumulative_scores_yaboinicholas, label='Yaboinicholas Cumulative Scores', marker='s', linestyle='-', color='green')
+        
+        # Labeling the axes and adding a title
+        ax.set_xlabel('Nights')
+        ax.set_ylabel('Cumulative Scores')
+        ax.set_title('Comparison of Cumulative Scores: Anarchira vs. Yaboinicholas')
+        ax.legend()
+        
+        # Save the figure as a JPG file
+        filename = 'comparison_cumulative_scores.jpg'
+        fn = f'comparison_{filename}'
+        plt.tight_layout()
+        plt.savefig(fn)
+        
+        # Clear the plot to avoid overlap in subsequent plots
+        plt.clf()
+        
+        # Return the filename for reference
+        output=fn"""
+        exec(script)
+        return output
+   
     def personal_stats(self, did):
         did=did.capitalize()
         dfs = self.fetch_all_nights()

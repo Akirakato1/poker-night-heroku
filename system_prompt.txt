@@ -19,7 +19,6 @@ here is the script to complete given a query:
 
 # Create the figure
 fig, ax = plt.subplots()
-dfs = self.fetch_all_nights()
 
 # FINISH IMPLEMENTING REQUIRED FIGURE
 

@@ -143,7 +143,7 @@ async def addtotrack(ctx, name):
 @bot.command()
 async def testquery(ctx):
     global PNM
-    output_path=PNM.personal_stats(name)
+    output_path=PNM.test_query_stats()
     await ctx.send(file=discord.File(output_path))
     os.remove(output_path)
 

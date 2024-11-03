@@ -19,6 +19,7 @@ class PokerNightManager():
         self.gs_url=f"https://docs.google.com/spreadsheets/d/{self.ssid}"
         self.ssname=os.getenv("SSNAME")
         self.reconnect()
+        self.active_night_view=None
     
     def reconnect(self):
         self.connect_gs()
@@ -31,6 +32,10 @@ class PokerNightManager():
         self.client = gspread.authorize(self.creds)
         self.sheets_service = build('sheets', 'v4', credentials=self.creds)
 
+    def finish_active_night(self):
+        self.active_night_player_data={}
+        self.active_night_view=None
+        
     def active_night_add_player(self, name):
         if name not in self.active_night_player_data.keys():
             self.active_night_player_data[name]=[1, 0]

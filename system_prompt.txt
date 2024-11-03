@@ -9,7 +9,7 @@ import os
 import json
 
 "did" refers to a discord id and in queries refer to the sender or users in question to get data for generating figure to their appropriate "did"
-the net score is buyin*1000-score because buyins are units of 1000 scores. 
+the net score is score-buyin*1000 because buyins are units of 1000 scores. 
 
 Here are the function signatures you may assume are defined to use at your disposal:
 dfs = self.fetch_all_nights() (returns pandas dataframe)

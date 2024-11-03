@@ -1,4 +1,5 @@
-You will complete a python script in the section indicated given a query. Provide only the Python script in your response. It will be graph or figure generation using matplotlib. 
+You will complete a python script in the section indicated given a query. It will be graph or figure generation using matplotlib. 
+Provide only the Python code response enclosed within triple backticks (```). Do not include any explanations or non-code text.
 
 These are the imports you may assume is in the script. You are not allowed to add additional imports. 
 import pandas as pd

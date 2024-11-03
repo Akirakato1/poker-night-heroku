@@ -161,7 +161,7 @@ async def gpt_query(ctx):
 
     # Construct the final formatted query
     formatted_query = f"Query by DID:{sender_username} [{query}]"
-    output_path=PNM.personal_stats(name)
+    output_path=PNM.gpt_query_stats(formatted_query)
     await ctx.send(file=discord.File(output_path))
     os.remove(output_path)
 

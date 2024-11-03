@@ -228,10 +228,13 @@ class PokerNightManager():
 
         print(script)
         dfs = self.fetch_all_nights()
+        fig, ax = plt.subplots()
         restricted_globals = {
             'self': self,
             'output': None,
-            'dfs': dfs
+            'dfs': dfs,
+            'fig':fig,
+            'ax':ax
         }
 
         # Execute the script within the restricted namespace

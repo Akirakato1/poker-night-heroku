@@ -194,9 +194,14 @@ class PokerNightManager():
             return "```Inconsistent nights detected:\n"+tabulate(pd.DataFrame(issue), headers='keys', tablefmt='grid', showindex=False)+"```"
 
     def test_query_stats(self):
+        with open('system_imports.txt', 'r') as file:
+            imports = file.read()
+            
         with open('test_script.txt', 'r') as file:
             script = file.read()
-            
+
+        script=imports+"\n"+script
+        
         restricted_globals = {
             'self': self,
             'output': None

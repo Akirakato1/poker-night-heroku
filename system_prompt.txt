@@ -22,8 +22,10 @@ fig, ax = plt.subplots()
 
 # FINISH IMPLEMENTING REQUIRED FIGURE
 
+#define appropriate filename 
+fn = 
+
 # Save the figure as a JPG file
-fn = f'{did}_{filename}'
 plt.tight_layout()
 plt.savefig(fn)
 # Clear the plot to avoid overlap in subsequent plots

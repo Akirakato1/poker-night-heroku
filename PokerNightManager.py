@@ -15,9 +15,9 @@ class PokerNightManager():
         self.sheet_prefix="Night"
         self.headers=["PLAYER", "BUYIN", "SCORE"]
         self.max_rows=20
-        self.ssid="1HQVLgCEhR2H5C_5ewqJLHLs2XNyKTfT_f-Y9ADcRey4"
+        self.ssid=os.getenv("SSID")
         self.gs_url=f"https://docs.google.com/spreadsheets/d/{self.ssid}"
-        self.ssname="LGang Poker Night"
+        self.ssname=os.getenv("SSNAME")
         self.reconnect()
     
     def reconnect(self):

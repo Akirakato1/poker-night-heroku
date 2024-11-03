@@ -102,17 +102,21 @@ async def track(ctx, *, names: str):
     player_names = [name.strip().capitalize() for name in normalized_input.splitlines() if name.strip()]
     
     PNM.init_active_night_players(player_names)
+    
     view = View(timeout=None)
-    for name in player_names:
-        button = PlayerButton(label=f"{name}: 1", player_name=name)
-        view.add_item(button)
-
     finish_button = FinishButton()
     abort_button = AbortButton()
     view.add_item(finish_button)
     view.add_item(abort_button)
+    
+    for name in player_names:
+        button = PlayerButton(label=f"{name}: 1", player_name=name)
+        view.add_item(button)
+
+    
+    
+    message = await ctx.send("Track Buyins. Click button to add 1", view=view)
     PNM.active_night_view=(view, message)
-    await ctx.send("Track Buyins. Click button to add 1", view=view)
 
 @bot.command()
 async def addtotrack(ctx, name):

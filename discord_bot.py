@@ -85,8 +85,11 @@ class AbortButton(Button):
         super().__init__(style=ButtonStyle.danger, label="ABORT")
 
     async def callback(self, interaction):
+        global PNM
         await interaction.response.defer()
         await interaction.followup.send("Track Aborted", ephemeral=False)
+
+        PNM.finish_active_night()
         
         # Disable all buttons after FINISH
         for item in self.view.children:

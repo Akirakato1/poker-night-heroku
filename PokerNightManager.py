@@ -228,7 +228,7 @@ class PokerNightManager():
         plt.clf()
         return fn
 
-    def plot_avgnetscores_buyins(self, buyins, scores, did, filename='avg_net_scores_buyins.jpg'):
+    def plot_avgnetscores_buyins(self, buyins, scores, did, filename='net_scores_buyins.jpg'):
         data = zip(buyins, [scores[i] - buyins[i] * 1000 for i in range(len(buyins))])
         buyin_data = defaultdict(lambda: {'total_net_score': 0, 'count': 0})
 
@@ -240,7 +240,8 @@ class PokerNightManager():
 
         # Calculate the average net score for each buyin size
         buyin_sizes = sorted(buyin_data.keys())
-        avg_net_scores = [buyin_data[buyin]['total_net_score'] / buyin_data[buyin]['count'] for buyin in buyin_sizes]
+        #avg_net_scores = [buyin_data[buyin]['total_net_score'] / buyin_data[buyin]['count'] for buyin in buyin_sizes]
+        avg_net_scores = [buyin_data[buyin]['total_net_score'] for buyin in buyin_sizes]
 
         # Create the bar chart
         fig, ax = plt.subplots()
@@ -250,7 +251,7 @@ class PokerNightManager():
         # Add labels and title
         ax.set_xlabel('Buy-in Size')
         ax.set_ylabel('Average Net Score')
-        ax.set_title(f'{self.did_to_name[did]}\'s Average Net Scores by Buy-in Size')
+        ax.set_title(f'{self.did_to_name[did]}\'s Net Scores by Buy-in Size')
         
         ax.set_xticks(buyin_sizes)
         

@@ -141,9 +141,10 @@ async def addtotrack(ctx, name):
         await ctx.send("No active tracking session found in this channel.")
 
 @bot.command()
-async def testquery(ctx):
+async def gpt_query(ctx, ):
     global PNM
-    output_path=PNM.test_query_stats()
+    
+    output_path=PNM.gpt_query_stats(query)
     await ctx.send(file=discord.File(output_path))
     os.remove(output_path)
 

@@ -225,6 +225,8 @@ class PokerNightManager():
     
         # Extract the generated script from the response
         script = imports+"\n"+extract_code_from_response(response['choices'][0]['message']['content'])
+
+        print(script)
         
         restricted_globals = {
             'self': self,

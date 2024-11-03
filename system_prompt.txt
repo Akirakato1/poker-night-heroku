@@ -13,14 +13,13 @@ import json
 the net score is score-buyin*1000 because buyins are units of 1000 scores. 
 
 Here are the function signatures you may assume are defined to use at your disposal:
-dfs = self.fetch_all_nights() (returns pandas dataframe)
-buyins, scores = self.extract_player_data(dfs, did) (returns list of integers buyins and scores)
-output_path=self.overlay_images_vertically([list of image paths], did) (combines the image into a single image vertically and returns path to the output image)
+buyins, scores = self.extract_player_data(dfs, did) (returns list of integers buyins and scores given a did)
 
 here is the script to complete given a query:
 
 # Create the figure
 fig, ax = plt.subplots()
+dfs = self.fetch_all_nights()
 
 # FINISH IMPLEMENTING REQUIRED FIGURE
 

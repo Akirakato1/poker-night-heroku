@@ -142,6 +142,7 @@ async def addtotrack(ctx, name):
 
 @bot.command()
 async def gpt_query(ctx):
+    global PNM
     # Get the raw message content
     raw_message = ctx.message.content
 
@@ -151,18 +152,18 @@ async def gpt_query(ctx):
     query = raw_message[len(command_prefix + command_name):].strip()
 
     # Get the sender's username
-    sender_username = ctx.author.name
+    sender_username = ctx.author.name.capitalize()
 
     # Replace user mentions (formatted as <@user_id>) with their display names and construct the formatted string
     for user in ctx.message.mentions:
         mention_placeholder = f'<@{user.id}>'
-        query = query.replace(mention_placeholder, f'DID:{user.name}')
+        query = query.replace(mention_placeholder, f'DID:{user.name.capitalize()}')
 
     # Construct the final formatted query
     formatted_query = f"Query by DID:{sender_username} [{query}]"
-
-    # Send feedback or process the query further
-    await ctx.send(f"Formatted query: {formatted_query}")
+    output_path=PNM.personal_stats(name)
+    await ctx.send(file=discord.File(output_path))
+    os.remove(output_path)
 
 @bot.command()
 async def checkdata(ctx):

@@ -70,6 +70,8 @@ class FinishButton(Button):
         
         #await interaction.response.send_message(f"{s_name} sheet created: {s_link}")
         await interaction.followup.send(f"{s_name} sheet created: {s_link}", ephemeral=False)
+
+        PNM.finish_active_night()
         
         # Disable all buttons after FINISH
         for item in self.view.children:
@@ -109,8 +111,28 @@ async def track(ctx, *, names: str):
     abort_button = AbortButton()
     view.add_item(finish_button)
     view.add_item(abort_button)
+    PNM.active_night_view=(view, message)
     await ctx.send("Track Buyins. Click button to add 1", view=view)
 
+@bot.command()
+async def addtotrack(ctx, name):
+    global PNM
+    # Check if there's an active view in the current channel
+    if not (PNM.active_night_view == None):
+        view, original_message = PNM.active_night_view
+
+        # Add a new button for the specified member
+        name=name.strip().capitalize()
+        button = PlayerButton(label=f"{name}: 1", player_name=name)
+        view.add_item(button)
+        PNM.active_night_add_player(name)
+        
+        # Edit the original message to display the updated view
+        await original_message.edit(view=view)
+        await ctx.send(f"Added {name} to the current track.")
+    else:
+        await ctx.send("No active tracking session found in this channel.")
+        
 @bot.command()
 async def checkdata(ctx):
     global PNM

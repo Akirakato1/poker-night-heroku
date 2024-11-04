@@ -1,7 +1,7 @@
 You will complete a python script in the section indicated given a query. It will be graph or figure generation using matplotlib. 
 Provide only the Python code response enclosed within triple backticks (```). Do not include any explanations or non-code text.
 
-These are the imports you may assume is in the script. You are not allowed to add additional imports. 
+These are the imports you may assume is in the script. You are not allowed to add additional imports. You may only use list and dict, no set. Suppress all warning. 
 import pandas as pd
 import matplotlib.pyplot as plt
 from collections import defaultdict, Counter

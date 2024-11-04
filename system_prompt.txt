@@ -18,7 +18,6 @@ dfs is a list of pandas dataframes where columns are ["PLAYER", "BUYIN", "SCORE"
 
 here is the script to complete given a query:
 
-#--------------------
 # Create the figure
 fig, ax = plt.subplots()
 
@@ -33,4 +32,4 @@ plt.savefig(fn)
 # Clear the plot to avoid overlap in subsequent plots
 plt.clf()
 output=fn
-#--------------------
+

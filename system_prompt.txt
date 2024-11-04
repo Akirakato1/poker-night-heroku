@@ -24,5 +24,7 @@ fig, ax = plt.subplots()
 
 # FINISH IMPLEMENTING REQUIRED FIGURE
 
-#define appropriate filename 
+#define appropriate filename and set it in the variable called fn
 fn = 
+
+#no need to save just make sure the variable fn has the filename

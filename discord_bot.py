@@ -111,6 +111,9 @@ async def track(ctx, *, names: str):
     abort_button = AbortButton()
     view.add_item(finish_button)
     view.add_item(abort_button)
+
+    for _ in range(3):
+        view.add_item(Button(label='', disabled=True, style=ButtonStyle.secondary))
     
     for name in player_names:
         button = PlayerButton(label=f"{name}: 1", player_name=name)

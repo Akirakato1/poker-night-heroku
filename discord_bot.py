@@ -156,14 +156,15 @@ async def gpt_query(ctx):
 
     # Get the sender's username
     sender_username = ctx.author.name.capitalize()
-
+    sender_player=PNM.did_to_name(sender_username)
+    
     # Replace user mentions (formatted as <@user_id>) with their display names and construct the formatted string
     for user in ctx.message.mentions:
         mention_placeholder = f'<@{user.id}>'
-        query = query.replace(mention_placeholder, f'DID:{user.name.capitalize()}')
+        query = query.replace(mention_placeholder, f'player:{PNM.did_to_name(user.name.capitalize())}')
 
     # Construct the final formatted query
-    formatted_query = f"Query by DID:{sender_username} [{query}]"
+    formatted_query = f"Query by player:{sender_player} [{query}]"
     output_path=PNM.gpt_query_stats(formatted_query)
     await ctx.send(file=discord.File(output_path))
     os.remove(output_path)

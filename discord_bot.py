@@ -47,7 +47,7 @@ async def on_command_error(ctx, error):
 #Poker Night commands:
 class PlayerButton(Button):
     def __init__(self, label, player_name):
-        super().__init__(style=ButtonStyle.primary, label=label, row=0)
+        super().__init__(style=ButtonStyle.primary, label=label)
         self.player_name = player_name
 
     async def callback(self, interaction):
@@ -60,7 +60,7 @@ class PlayerButton(Button):
 
 class FinishButton(Button):
     def __init__(self):
-        super().__init__(style=ButtonStyle.success, label="FINISH", row=1)
+        super().__init__(style=ButtonStyle.success, label="FINISH")
 
     async def callback(self, interaction):
         global PNM
@@ -82,7 +82,7 @@ class FinishButton(Button):
         
 class AbortButton(Button):
     def __init__(self):
-        super().__init__(style=ButtonStyle.danger, label="ABORT", row=1)
+        super().__init__(style=ButtonStyle.danger, label="ABORT")
 
     async def callback(self, interaction):
         global PNM

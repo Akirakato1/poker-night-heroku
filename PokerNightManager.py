@@ -209,6 +209,9 @@ class PokerNightManager():
         with open('system_imports.txt', 'r') as file:
             imports = file.read()
             
+        with open('system_end.txt', 'r') as file:
+            ending = file.read()    
+            
         # Read the system prompt from the file
         with open('system_prompt.txt', 'r') as file:
             system_prompt = file.read()
@@ -223,7 +226,7 @@ class PokerNightManager():
         )
     
         # Extract the generated script from the response
-        script = imports+"\n"+extract_code_from_response(response['choices'][0]['message']['content'])
+        script = imports+"\n"+extract_code_from_response(response['choices'][0]['message']['content'])+"\n"+ending
 
         print(script)
         dfs = self.fetch_all_nights()

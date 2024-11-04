@@ -15,7 +15,7 @@ where every mention of a player is marked as player:<player name>. use the appro
 
 Here are the function/variable signatures you may assume are defined to use at your disposal:
 dfs is a list of pandas dataframes where columns are ["PLAYER", "BUYIN", "SCORE"] and "PLAYER" columns are names.
-buyins, scores = self.extract_player_data_from_name(dfs, player_name) (returns list of buyins and scores for that player across all nights)
+buyins, scores = self.extract_player_data_from_name(dfs, player_name) (returns list of buyins and scores for that player across all nights given dfs)
 
 here is the script to complete given a query:
 

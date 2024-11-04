@@ -1,0 +1,6 @@
+# Save the figure as a JPG file
+plt.tight_layout()
+plt.savefig(fn)
+# Clear the plot to avoid overlap in subsequent plots
+plt.clf()
+output=fn

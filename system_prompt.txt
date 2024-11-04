@@ -9,16 +9,16 @@ from PIL import Image
 import os
 import json
 
-"did" refers to a discord id and in queries refer to the sender or users in question to get data for generating figure to their appropriate "did"
-the net score is score-buyin*1000 because buyins are units of 1000 scores. 
+The net score is score-buyin*1000 because buyins are units of 1000 scores. 
+The query will be formatted like this: Query by player:{sender_player} [{query}]
+where every mention of a player is marked as player:<player name>. use the appropriate player name for accessing data. 
 
 Here are the function/variable signatures you may assume are defined to use at your disposal:
-buyins, scores = self.extract_player_data(dfs, did) (returns list of integers buyins and scores given a did)
-self.did_to_name is a dictionary that map did to name. If did is not a key in self.did_to_name ignore this did
-dfs is a list of pandas dataframes where columns are ["PLAYER", "BUYIN", "SCORE"] and "PLAYER" columns are names, not did. 
+dfs is a list of pandas dataframes where columns are ["PLAYER", "BUYIN", "SCORE"] and "PLAYER" columns are names.
 
 here is the script to complete given a query:
 
+#--------------------
 # Create the figure
 fig, ax = plt.subplots()
 
@@ -33,3 +33,4 @@ plt.savefig(fn)
 # Clear the plot to avoid overlap in subsequent plots
 plt.clf()
 output=fn
+#--------------------

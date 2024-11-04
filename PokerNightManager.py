@@ -113,7 +113,6 @@ class PokerNightManager():
         
         return f"Added scores to Night {night}\n```{tabulate(sheet_df, headers='keys', tablefmt='grid', showindex=False)}```"
         
-    
     def fetch_players(self):
         spreadsheet = self.client.open(self.ssname)
         sheet = spreadsheet.get_worksheet(0)
@@ -365,6 +364,18 @@ class PokerNightManager():
         buyins = []
         scores = []
         player_name=self.did_to_name[did]
+        
+        for df in dfs:
+            if player_name in df['PLAYER'].values:
+                player_data = df[df['PLAYER'] == player_name]
+                buyins.extend(player_data['BUYIN'].tolist())
+                scores.extend(player_data['SCORE'].tolist())
+
+        return buyins, scores
+
+    def extract_player_data_from_name(self, dfs, player_name):
+        buyins = []
+        scores = []
         
         for df in dfs:
             if player_name in df['PLAYER'].values:

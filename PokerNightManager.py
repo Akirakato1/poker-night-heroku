@@ -49,6 +49,17 @@ class PokerNightManager():
     
     def init_active_night_players(self, names=[]):
         self.active_night_player_data={name:[1, 0] for name in names}
+
+    def dids_to_names(self, dids):
+        output=[]
+        for did in dids:
+            if did in self.did_to_name.keys():
+                output.append(self.did_to_name[did])
+            else:
+                output.append(did)
+        return output
+
+    
     
     def create_new_sheet(self):
         names=list(self.active_night_player_data.keys())

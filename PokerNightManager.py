@@ -23,7 +23,6 @@ class PokerNightManager():
         self.reconnect()
         self.active_night_view=None
         self.db=database
-        self.gpt_query_table_name="gpt_query_result"
     
     def reconnect(self):
         self.connect_gs()
@@ -242,7 +241,7 @@ class PokerNightManager():
         gpt_query_result={"query":query, "script":script}
         
         if not self.db == None:
-            self.db.push_document(self.gpt_query_table_name, gpt_query_result)
+            self.db.push_document(self.db.gpt_query_table_name, gpt_query_result)
         
         dfs = self.fetch_all_nights()
         fig, ax = plt.subplots()

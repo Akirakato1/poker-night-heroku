@@ -7,6 +7,7 @@ class DBManager:
     def __init__(self):
         self.r = RethinkDB()
         self.conn = self.connect_rethinkdb()
+        self.gpt_query_table_name="gpt_query_result"
 
     def connect_rethinkdb(self):
         try:

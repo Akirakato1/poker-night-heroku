@@ -11,8 +11,8 @@ import json
 import openai
 from DBManager import DBManager
 
-class PokerNightManager(database=None):
-    def __init__(self):
+class PokerNightManager():
+    def __init__(self, database=None):
         openai.api_key = os.getenv('OPENAI_API_KEY')
         self.active_night_player_data={}
         self.sheet_prefix="Night"

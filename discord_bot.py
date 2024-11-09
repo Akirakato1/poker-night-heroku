@@ -212,5 +212,5 @@ async def stats(ctx, user: commands.MemberConverter()=None):
 
 # Start the keep-alive mechanism
 PNM.keep_google_connection_alive()
-
+DB.keep_alive_rethinkdb()
 bot.run(TOKEN)

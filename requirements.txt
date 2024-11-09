@@ -7,4 +7,5 @@ matplotlib
 Pillow
 openai==0.28
 rethinkdb 
+flask
 git+https://github.com/Rapptz/discord.py

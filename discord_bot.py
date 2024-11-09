@@ -7,6 +7,7 @@ from discord.ext import commands
 from discord import ButtonStyle
 from discord.ui import Button, View
 from PokerNightManager import PokerNightManager
+from DBManager import DBManager
 
 TOKEN = os.getenv('DISCORD_TOKEN')
 # Create a bot instance
@@ -17,6 +18,7 @@ intents.message_content = True  # Necessary to access the content of messages
 
 bot = commands.Bot(command_prefix='!', intents=intents, description="This is a Dice Roll bot", help_command=None)
 PNM=PokerNightManager()
+DB=DBManager()
 
 # Event listener for when the bot has switched from offline to online.
 @bot.event
@@ -208,24 +210,7 @@ async def stats(ctx, user: commands.MemberConverter()=None):
     await ctx.send(file=discord.File(output_path))
     os.remove(output_path)
 
-# Assuming PNM is an instance of PokerNightManager
-def keep_google_connection_alive(manager_instance, interval=300):
-    """Keep the Google Sheets connection alive by periodically calling reconnect()."""
-    def keep_alive_task():
-        while True:
-            try:
-                # Call the existing reconnect function
-                manager_instance.reconnect()
-                print("Google Sheets connection refreshed successfully.")
-            except Exception as e:
-                print(f"Error during Google Sheets keep-alive: {e}")
-            time.sleep(interval)
-
-    # Start the keep-alive task in a separate thread
-    thread = threading.Thread(target=keep_alive_task, daemon=True)
-    thread.start()
-
 # Start the keep-alive mechanism
-keep_google_connection_alive(PNM)
+PNM.keep_google_connection_alive()
 
 bot.run(TOKEN)

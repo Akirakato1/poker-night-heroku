@@ -402,6 +402,22 @@ class PokerNightManager():
                 scores.extend(player_data['SCORE'].tolist())
 
         return buyins, scores
+        
+    def keep_google_connection_alive(self, interval=300):
+        """Keep the Google Sheets connection alive by periodically calling reconnect()."""
+        def keep_alive_task():
+            while True:
+                try:
+                    # Call the existing reconnect function
+                    self.reconnect()
+                    print("Google Sheets connection refreshed successfully.")
+                except Exception as e:
+                    print(f"Error during Google Sheets keep-alive: {e}")
+                time.sleep(interval)
+    
+        # Start the keep-alive task in a separate thread
+        thread = threading.Thread(target=keep_alive_task, daemon=True)
+        thread.start()
     
     def overlay_images_vertically(self, image_paths, did, filename='combined_image.jpg'):
         # Open all the images from the provided filepaths

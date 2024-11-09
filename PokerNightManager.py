@@ -9,7 +9,6 @@ from PIL import Image
 import os
 import json
 import openai
-from DBManager import DBManager
 
 class PokerNightManager():
     def __init__(self, database=None):

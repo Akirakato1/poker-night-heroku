@@ -7,7 +7,6 @@ class DBManager:
     def __init__(self):
         self.r = RethinkDB()
         self.conn = self.connect_rethinkdb()
-        threading.Thread(target=self.maintain_rethinkdb_connection, daemon=True).start()
 
     def connect_rethinkdb(self):
         try:
@@ -23,18 +22,20 @@ class DBManager:
             print("Error connecting to RethinkDB:", e)
             return None
 
-    def maintain_rethinkdb_connection(self):
-        while True:
-            try:
-                if self.conn is None or not self.conn.is_open():
-                    print("Reconnecting to RethinkDB...")
-                    self.conn = self.connect_rethinkdb()
-                else:
-                    # Ping the server to keep the connection active
-                    self.r.now().run(self.conn)
-            except Exception as e:
-                print("Error maintaining connection:", e)
-            time.sleep(60)  # Wait for 1 minute before checking again
+    def keep_alive_rethinkdb(self):
+        def maintain_rethinkdb_connection():
+            while True:
+                try:
+                    if self.conn is None or not self.conn.is_open():
+                        print("Reconnecting to RethinkDB...")
+                        self.conn = self.connect_rethinkdb()
+                    else:
+                        # Ping the server to keep the connection active
+                        self.r.now().run(self.conn)
+                except Exception as e:
+                    print("Error maintaining connection:", e)
+                time.sleep(60)  # Wait for 1 minute before checking again
+        threading.Thread(target=self.maintain_rethinkdb_connection, daemon=True).start()
 
     def create_table(self, table_name):
         try:

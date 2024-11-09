@@ -217,14 +217,14 @@ class PokerNightManager():
                 return response_text[start + len(start_marker):end].strip()
             return response_text  # Return as-is if markers are not found
             
-        with open('system_imports.txt', 'r') as file:
+        with open('./gpt_query_texts/system_imports.txt', 'r') as file:
             imports = file.read()
             
-        with open('system_end.txt', 'r') as file:
+        with open('./gpt_query_texts/system_end.txt', 'r') as file:
             ending = file.read()    
             
         # Read the system prompt from the file
-        with open('system_prompt.txt', 'r') as file:
+        with open('./gpt_query_texts/system_prompt.txt', 'r') as file:
             system_prompt = file.read()
     
         # Make the API call with the system and user messages

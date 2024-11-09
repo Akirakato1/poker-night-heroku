@@ -8,7 +8,8 @@ class DBManager:
         self.r = RethinkDB()
         self.conn = self.connect_rethinkdb()
         self.gpt_query_table_name="gpt_query_result"
-
+        self.init_table(self.gpt_query_table_name)
+    
     def connect_rethinkdb(self):
         try:
             conn = self.r.connect(
@@ -23,6 +24,9 @@ class DBManager:
             print("Error connecting to RethinkDB:", e)
             return None
 
+    def init_table(self, table_name):
+        self.create_table(table_name)
+    
     def keep_alive_rethinkdb(self):
         def maintain_rethinkdb_connection():
             while True:

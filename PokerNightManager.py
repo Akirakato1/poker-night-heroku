@@ -11,7 +11,7 @@ import json
 import openai
 from DBManager import DBManager
 
-class PokerNightManager():
+class PokerNightManager(database=None):
     def __init__(self):
         openai.api_key = os.getenv('OPENAI_API_KEY')
         self.active_night_player_data={}
@@ -23,9 +23,8 @@ class PokerNightManager():
         self.ssname=os.getenv("SSNAME")
         self.reconnect()
         self.active_night_view=None
-        self.db=DBManager()
+        self.db=database
         self.gpt_query_table_name="gpt_query_result"
-        self.db.create_table(self.gpt_query_table_name)
     
     def reconnect(self):
         self.connect_gs()
@@ -242,7 +241,9 @@ class PokerNightManager():
         script = imports+"\n"+extract_code_from_response(response['choices'][0]['message']['content'])+"\n"+ending
 
         gpt_query_result={"query":query, "script":script}
-        self.db.push_document(self.gpt_query_table_name, gpt_query_result)
+        
+        if not self.db == None:
+            self.db.push_document(self.gpt_query_table_name, gpt_query_result)
         
         dfs = self.fetch_all_nights()
         fig, ax = plt.subplots()

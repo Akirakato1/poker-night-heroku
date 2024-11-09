@@ -9,6 +9,7 @@ from PIL import Image
 import os
 import json
 import openai
+from DBManager import DBManager
 
 class PokerNightManager():
     def __init__(self):
@@ -22,6 +23,9 @@ class PokerNightManager():
         self.ssname=os.getenv("SSNAME")
         self.reconnect()
         self.active_night_view=None
+        self.db=DBManager()
+        self.gpt_query_table_name="gpt_query_result"
+        self.db.create_table(self.gpt_query_table_name)
     
     def reconnect(self):
         self.connect_gs()
@@ -59,8 +63,6 @@ class PokerNightManager():
                 output.append(did)
         return output
 
-    
-    
     def create_new_sheet(self):
         names=list(self.active_night_player_data.keys())
         buyins_scores=list(self.active_night_player_data.values())
@@ -239,7 +241,9 @@ class PokerNightManager():
         # Extract the generated script from the response
         script = imports+"\n"+extract_code_from_response(response['choices'][0]['message']['content'])+"\n"+ending
 
-        print(script)
+        gpt_query_result={"query":query, "script":script}
+        self.db.push_document(self.gpt_query_table_name, gpt_query_result)
+        
         dfs = self.fetch_all_nights()
         fig, ax = plt.subplots()
         restricted_globals = {

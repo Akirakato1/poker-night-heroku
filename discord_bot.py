@@ -17,8 +17,8 @@ intents.guilds = True    # Necessary for operating within guilds
 intents.message_content = True  # Necessary to access the content of messages
 
 bot = commands.Bot(command_prefix='!', intents=intents, description="This is a Dice Roll bot", help_command=None)
-PNM=PokerNightManager()
 DB=DBManager()
+PNM=PokerNightManager(DB)
 
 # Event listener for when the bot has switched from offline to online.
 @bot.event

@@ -101,8 +101,12 @@ class AbortButton(Button):
 @bot.command()
 async def track(ctx, *, names: str):
     global PNM
-    normalized_input = names.replace(",", "\n")
-    player_names = [name.strip().capitalize() for name in normalized_input.splitlines() if name.strip()]
+    mentions = ctx.message.mentions
+    if mentions:
+        player_names = PNM.dids_to_names([user.name.capitalize() for user in mentions])
+    else:
+        normalized_input = names.replace(",", "\n")
+        player_names = [name.strip().capitalize() for name in normalized_input.splitlines() if name.strip()]
     
     PNM.init_active_night_players(player_names)
     
@@ -119,8 +123,6 @@ async def track(ctx, *, names: str):
         button = PlayerButton(label=f"{name}: 1", player_name=name)
         view.add_item(button)
 
-    
-    
     message = await ctx.send("Track Buyins. Click button to add 1", view=view)
     PNM.active_night_view=(view, message)
 
@@ -130,9 +132,14 @@ async def addtotrack(ctx, name):
     # Check if there's an active view in the current channel
     if not (PNM.active_night_view == None):
         view, original_message = PNM.active_night_view
-
+        
         # Add a new button for the specified member
-        name=name.strip().capitalize()
+        mention = ctx.message.mentions
+        if mentions:
+            name=PNM.dids_to_names([mention[0].name.capitalize()])[0]
+        else:
+            name=name.strip().capitalize()
+            
         button = PlayerButton(label=f"{name}: 1", player_name=name)
         view.add_item(button)
         PNM.active_night_add_player(name)

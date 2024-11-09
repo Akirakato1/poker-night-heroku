@@ -36,7 +36,7 @@ class DBManager:
                 except Exception as e:
                     print("Error maintaining connection:", e)
                 time.sleep(60)  # Wait for 1 minute before checking again
-        threading.Thread(target=self.maintain_rethinkdb_connection, daemon=True).start()
+        threading.Thread(target=maintain_rethinkdb_connection, daemon=True).start()
 
     def create_table(self, table_name):
         try:

@@ -9,6 +9,7 @@ from PIL import Image
 import os
 import json
 import openai
+import threading
 
 class PokerNightManager():
     def __init__(self, database=None):

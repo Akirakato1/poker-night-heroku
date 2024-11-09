@@ -134,9 +134,9 @@ async def addtotrack(ctx, name):
         view, original_message = PNM.active_night_view
         
         # Add a new button for the specified member
-        mention = ctx.message.mentions
+        mentions = ctx.message.mentions
         if mentions:
-            name=PNM.dids_to_names([mention[0].name.capitalize()])[0]
+            name=PNM.dids_to_names([mentions[0].name.capitalize()])[0]
         else:
             name=name.strip().capitalize()
             

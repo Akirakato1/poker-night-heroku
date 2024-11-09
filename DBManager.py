@@ -55,14 +55,14 @@ class DBManager:
     def push_document(self, table_name, document):
         try:
             self.r.table(table_name).insert(document).run(self.conn)
-            print(f"Document inserted into '{table_name}':", document)
+            print(f"Document inserted into '{table_name}'")
         except Exception as e:
             print("Error inserting document:", e)
 
     def pull_table_data(self, table_name):
         try:
             data = list(self.r.table(table_name).run(self.conn))
-            print(f"Data pulled from '{table_name}':", data)
+            print(f"Data pulled from '{table_name}'")
             return data
         except Exception as e:
             print("Error pulling data:", e)

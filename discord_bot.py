@@ -104,8 +104,12 @@ class AbortButton(Button):
 async def track(ctx, *, names: str):
     global PNM
     mentions = ctx.message.mentions
+    player_names=[]
+    if ctx.author.voice and ctx.author.voice.channel:
+        voice_channel = ctx.author.voice.channel
+        player_names.extend(PNM.dids_to_names([user.name.capitalize() for user in voice_channel.members]))
     if mentions:
-        player_names = PNM.dids_to_names([user.name.capitalize() for user in mentions])
+        player_names.extend(PNM.dids_to_names([user.name.capitalize() for user in mentions]))
     else:
         normalized_input = names.replace(",", "\n")
         player_names = [name.strip().capitalize() for name in normalized_input.splitlines() if name.strip()]

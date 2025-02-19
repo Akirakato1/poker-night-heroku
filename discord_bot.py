@@ -101,7 +101,7 @@ class AbortButton(Button):
         self.view.stop()
         
 @bot.command()
-async def track(ctx, *, names: str):
+async def track(ctx, *, names: str = ""):
     global PNM
     mentions = ctx.message.mentions
     player_names=[]

@@ -13,10 +13,12 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 # Create a bot instance
 intents = discord.Intents.default()
 intents.messages = True
+intents.members = True
 intents.guilds = True    # Necessary for operating within guilds
+intents.voice_states = True
 intents.message_content = True  # Necessary to access the content of messages
 
-bot = commands.Bot(command_prefix='!', intents=intents, description="This is a Dice Roll bot", help_command=None)
+bot = commands.Bot(command_prefix='!', intents=intents, description="This is Poker Night bot", help_command=None)
 DB=DBManager()
 PNM=PokerNightManager(DB)
 
